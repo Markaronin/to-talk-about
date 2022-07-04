@@ -4,14 +4,14 @@ import { h } from "preact";
 import { todoDb } from "../types/jsondb.ts";
 import { Todo } from "../types/todo.ts";
 
-export const handler: Handlers<Todo[]> = {
+export const handler: Handlers<Record<string, Todo>> = {
     async GET(_, ctx) {
         const todos = await todoDb.list();
         return ctx.render(todos);
     },
 };
 
-export default function Home({ data }: PageProps<Todo[]>) {
+export default function Home({ data }: PageProps<Record<string, Todo>>) {
     return (
         <div>
             <img
@@ -22,10 +22,11 @@ export default function Home({ data }: PageProps<Todo[]>) {
             <hr />
             <h1>Todos</h1>
             <ul>
-                {data.map((todo) => (
+                {Object.entries(data).map(([id, todo]) => (
                     <li>
                         <form method="post" action="api/todo">
                             <input type="hidden" name="deleting" />
+                            <input type="hidden" name="id" value={id} />
                             {todo.title}
                             <button>Delete</button>
                         </form>

@@ -5,13 +5,13 @@ import { notNull } from "../../types/util.ts";
 
 function add(req: Request, formData: FormData): Response {
     const newTodo: Todo = {
-        title: formData.get("title")!.toString(),
+        title: notNull(formData.get("title")).toString(),
     };
     todoDb.insert(newTodo);
     return Response.redirect(notNull(req.headers.get("referer")));
 }
 function del(req: Request, formData: FormData): Response {
-    console.log("deleting", formData);
+    todoDb.delete(notNull(formData.get("id")).toString());
     return Response.redirect(notNull(req.headers.get("referer")));
 }
 
