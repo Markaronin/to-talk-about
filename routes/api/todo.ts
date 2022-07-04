@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { Todo } from "types/todo.ts";
+import { Todo } from "../../types/todo.ts";
 import { todoDb } from "../../types/dynamodb.ts";
 import { notNull } from "../../types/util.ts";
 
