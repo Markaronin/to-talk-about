@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { Todo } from "types/todo.ts";
-import { todoDb } from "../../types/jsondb.ts";
+import { todoDb } from "../../types/dynamodb.ts";
 import { notNull } from "../../types/util.ts";
 
 function add(req: Request, formData: FormData): Response {

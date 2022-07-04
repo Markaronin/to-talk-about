@@ -1,7 +1,7 @@
 /** @jsx h */
 import { Handlers, PageProps } from "https://deno.land/x/fresh@1.0.0/server.ts";
 import { h } from "preact";
-import { todoDb } from "../types/jsondb.ts";
+import { todoDb } from "../types/dynamodb.ts";
 import { Todo } from "../types/todo.ts";
 
 export const handler: Handlers<Record<string, Todo>> = {
