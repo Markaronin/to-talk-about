@@ -3,15 +3,15 @@ import { Todo } from "types/todo.ts";
 import { todoDb } from "../../types/dynamodb.ts";
 import { notNull } from "../../types/util.ts";
 
-function add(req: Request, formData: FormData): Response {
+async function add(req: Request, formData: FormData): Promise<Response> {
     const newTodo: Omit<Todo, "id"> = {
         title: notNull(formData.get("title")).toString(),
     };
-    todoDb.insert(newTodo);
+    await todoDb.insert(newTodo);
     return Response.redirect(notNull(req.headers.get("referer")));
 }
-function del(req: Request, formData: FormData): Response {
-    todoDb.delete(notNull(formData.get("id")).toString());
+async function del(req: Request, formData: FormData): Promise<Response> {
+    await todoDb.delete(notNull(formData.get("id")).toString());
     return Response.redirect(notNull(req.headers.get("referer")));
 }
 

@@ -38,6 +38,7 @@ class DynamoDb<T> implements DB<T> {
     }
 
     public async list(): Promise<Record<string, T>> {
+        console.debug("Started listing todos");
         const command = new ScanCommand({
             TableName: this.tableName,
         }); // TODO - paginate this
@@ -72,16 +73,38 @@ class DynamoDb<T> implements DB<T> {
         return newId;
     }
 
-    public async update(id: string, val: T): Promise<void> {
-        throw "Not implemented";
+    public async update(
+        id: string,
+        val: Partial<Omit<T, "id">>,
+    ): Promise<void> {
+        const existingItem = await this.get(id);
+        if (existingItem) {
+            const command = new PutItemCommand({
+                TableName: this.tableName,
+                Item: marshall({ ...existingItem, ...val, id }),
+            });
+            this.validateResponse(await this.client.send(command));
+        } else {
+            throw `Tried to update object with id ${id}, but it did not exist`;
+        }
     }
 
     public async delete(id: string): Promise<void> {
-        const command = new DeleteItemCommand({
-            TableName: this.tableName,
-            Key: marshall({ id }),
-        });
-        this.validateResponse(await this.client.send(command));
+        console.debug(`Starting to delete ${id}`);
+        const existingItem = await this.get(id);
+        if (existingItem) {
+            const command = new DeleteItemCommand({
+                TableName: this.tableName,
+                Key: marshall({ id }),
+            });
+            const response = await this.client.send(command);
+            this.validateResponse(response);
+            console.debug(`Finished deleting ${id}`);
+        } else {
+            console.warn(
+                `Tried to delete object with id ${id}, but it did not exist`,
+            );
+        }
     }
 }
 
