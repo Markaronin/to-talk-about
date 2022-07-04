@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
-import { Todo } from "../../types/todo.ts";
-import { todoDb } from "../../types/dynamodb.ts";
-import { notNull } from "../../types/util.ts";
+import { Todo } from "../../src/model/todo.ts";
+import { todoDb } from "../../src/db/dynamodb.ts";
+import { notNull } from "../../src/util.ts";
 
 async function add(req: Request, formData: FormData): Promise<Response> {
     const newTodo: Omit<Todo, "id"> = {

@@ -1,5 +1,5 @@
-import { Todo } from "./todo.ts";
-import { notUndefined } from "./util.ts";
+import { Todo } from "../model/todo.ts";
+import { notUndefined } from "../util.ts";
 import {
     unmarshall,
     marshall,
