@@ -8,6 +8,11 @@ class JsonDB<T> implements DB<T> {
         await Deno.writeTextFile(this.filePath, JSON.stringify(currentItems));
     }
 
+    public async get(id: string): Promise<T | undefined> {
+        const currentItems = await this.list();
+        return currentItems[id];
+    }
+
     public async list(): Promise<Record<string, T>> {
         return await Deno.readTextFile(this.filePath).then(JSON.parse);
     }
@@ -18,6 +23,16 @@ class JsonDB<T> implements DB<T> {
         currentItems[myUUID] = item;
         await this.save(currentItems);
         return myUUID;
+    }
+
+    public async update(id: string, val: T): Promise<void> {
+        const currentItems = await this.list();
+        if (id in currentItems) {
+            currentItems[id] = val;
+            await this.save(currentItems);
+        } else {
+            throw `Tried to update item ${id} that did not exist in the db`;
+        }
     }
 
     public async delete(id: string): Promise<void> {
