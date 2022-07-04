@@ -7,6 +7,7 @@ import {
 import {
     DeleteItemCommand,
     DynamoDBClient,
+    GetItemCommand,
     PutItemCommand,
     ScanCommand,
 } from "https://esm.sh/@aws-sdk/client-dynamodb@3.121.0";
@@ -51,11 +52,17 @@ class DynamoDb<T> implements DB<T> {
     }
 
     public async get(id: string): Promise<T | undefined> {
-        throw "Not implemented";
-        return undefined;
+        const command = new GetItemCommand({
+            TableName: this.tableName,
+            Key: marshall({ id }),
+        });
+        const result = await this.client.send(command);
+        this.validateResponse(result);
+        const item = result.Item ? unmarshall(result.Item) : result.Item;
+        return item as T;
     }
 
-    public async insert(val: T): Promise<string> {
+    public async insert(val: Omit<T, "id">): Promise<string> {
         const newId = crypto.randomUUID();
         const command = new PutItemCommand({
             TableName: this.tableName,

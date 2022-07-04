@@ -4,7 +4,7 @@ import { todoDb } from "../../types/dynamodb.ts";
 import { notNull } from "../../types/util.ts";
 
 function add(req: Request, formData: FormData): Response {
-    const newTodo: Todo = {
+    const newTodo: Omit<Todo, "id"> = {
         title: notNull(formData.get("title")).toString(),
     };
     todoDb.insert(newTodo);
