@@ -14,12 +14,6 @@ export const handler: Handlers<Record<string, Todo>> = {
 export default function Home({ data }: PageProps<Record<string, Todo>>) {
     return (
         <div>
-            <img
-                src="/logo.svg"
-                height="100px"
-                alt="the fresh logo: a sliced lemon dripping with juice"
-            />
-            <hr />
             <h1>Todos</h1>
             <ul>
                 {Object.entries(data).map(([id, todo]) => (
