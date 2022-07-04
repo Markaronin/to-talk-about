@@ -15,26 +15,30 @@ export default function Home({ data }: PageProps<Record<string, Todo>>) {
     return (
         <div>
             <h1>Todos</h1>
-            {Object.entries(data).map(([id, todo]) => (
-                <div
-                    style={{
-                        marginTop: "0.25em",
-                        paddingTop: "0.25em",
-                        borderTop: "1px solid black",
-                    }}
-                >
-                    <form
-                        method="post"
-                        action="api/todo"
-                        style={{ display: "flex" }}
+            {Object.entries(data)
+                .sort((a, b) => a[1].title.localeCompare(b[1].title))
+                .map(([id, todo]) => (
+                    <div
+                        style={{
+                            marginTop: "0.25em",
+                            paddingTop: "0.25em",
+                            borderTop: "1px solid black",
+                        }}
                     >
-                        <input type="hidden" name="deleting" />
-                        <input type="hidden" name="id" value={id} />
-                        {todo.title}
-                        <button style={{ marginLeft: "auto" }}>Delete</button>
-                    </form>
-                </div>
-            ))}
+                        <form
+                            method="post"
+                            action="api/todo"
+                            style={{ display: "flex" }}
+                        >
+                            <input type="hidden" name="deleting" />
+                            <input type="hidden" name="id" value={id} />
+                            {todo.title}
+                            <button style={{ marginLeft: "auto" }}>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                ))}
             <hr />
             <form method="post" action="api/todo">
                 Add new TODO:
