@@ -1,6 +1,7 @@
 /** @jsx h */
 import { Handlers, PageProps } from "https://deno.land/x/fresh@1.0.0/server.ts";
-import { h } from "preact";
+import { Head } from "https://deno.land/x/fresh@1.0.0/src/runtime/head.ts";
+import { Fragment, h } from "preact";
 import { todoDb } from "../src/db/dynamodb.ts";
 import { Todo } from "../src/model/todo.ts";
 
@@ -13,9 +14,13 @@ export const handler: Handlers<Record<string, Todo>> = {
 
 export default function Home({ data }: PageProps<Record<string, Todo>>) {
     return (
-        <body>
+        <Fragment>
+            <Head>
+                <title>To Talk About</title>
+                <link rel="stylesheet" href="style.css" />
+            </Head>
             <div>
-                <h1>Todos</h1>
+                <h1>To Talk About</h1>
                 {Object.entries(data)
                     .sort((a, b) => a[1].title.localeCompare(b[1].title))
                     .map(([id, todo]) => (
@@ -53,6 +58,6 @@ export default function Home({ data }: PageProps<Record<string, Todo>>) {
                 </form>
                 <hr />
             </div>
-        </body>
+        </Fragment>
     );
 }
