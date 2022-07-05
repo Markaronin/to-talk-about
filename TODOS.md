@@ -1,0 +1,1 @@
+- Precompile less to css to avoid 100+ KB bundle (which defeats the purpose of using fresh)

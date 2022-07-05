@@ -17,20 +17,15 @@ export default function Home({ data }: PageProps<Record<string, Todo>>) {
         <Fragment>
             <Head>
                 <title>To Talk About</title>
-                <link rel="stylesheet" href="style.css" />
+                <link rel="stylesheet/less" href="style.less" />
+                <script src="https://cdn.jsdelivr.net/npm/less@4"></script>
             </Head>
             <div>
                 <h1>To Talk About</h1>
                 {Object.entries(data)
                     .sort((a, b) => a[1].title.localeCompare(b[1].title))
                     .map(([id, todo]) => (
-                        <div
-                            style={{
-                                marginTop: "0.25em",
-                                paddingTop: "0.25em",
-                                borderTop: "1px solid black",
-                            }}
-                        >
+                        <div className="todo-row">
                             <form
                                 method="post"
                                 action="api/todo"
